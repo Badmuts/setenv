@@ -1,6 +1,6 @@
 
 _setenv_run() {
-    if [ -x ".setenv" ] ; then 
+    if [ -x ".setenv" || -x "setenv" ] ; then 
         execute=1
         current_dir=`pwd`
         grep -Fx "$current_dir" ~/.setenv-whitelist &> /dev/null
@@ -16,7 +16,11 @@ _setenv_run() {
 
         if [ 1 -eq $execute ] ; then
             echo "File .setenv exists and is executable, will execute it."
-            source `pwd`/.setenv
+            if [ -x ".setenv" ] ; then 
+                source `pwd`/.setenv
+            elif [ -x "setenv" ]; then
+                source `pwd`/setenv
+            fi
         fi
     fi
 }
